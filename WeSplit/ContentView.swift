@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var numberOfPeopleIndex = 2
     @State private var tipPercentage = 20
     
+    @FocusState private var amountIsFocused: Bool
+    
     let tipPercentages = [10, 15, 20, 25, 0]
     
     var totalPerPerson: Double {
@@ -32,6 +34,7 @@ struct ContentView: View {
                 TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
                     .textFieldStyle(.roundedBorder)
                     .keyboardType(.decimalPad)
+                    .focused($amountIsFocused)
                 
                 Picker("Select number of people", selection: $numberOfPeopleIndex) {
                     ForEach(2..<20) {
@@ -55,6 +58,14 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("WeSplit")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        amountIsFocused = false
+                    }
+                }
+            }
         }
     }
 }
